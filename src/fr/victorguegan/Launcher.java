@@ -1,23 +1,21 @@
 package fr.victorguegan;
 
-import java.net.InetAddress;
+import java.io.IOException;
 
 public class Launcher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        double ping = 0;
+        Controler controleur = new Controler();
+        GUI fenetre = new GUI();
+        while (controleur.en_route) {
+            System.out.println(controleur);
+            ping = controleur.getPing("104.160.141.3");
+            controleur.majStat(ping);
+            fenetre.updateGUI(controleur.min, controleur.moyenne, controleur.max, controleur.last_ping);
 
-        try{
-            InetAddress inet;
-
-            inet = InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 });
-            System.out.println("Sending Ping Request to " + inet);
-            System.out.println(inet.isReachable(5000) ? "Host is reachable" : "Host is NOT reachable");
-
-            inet = InetAddress.getByAddress(new byte[] { (byte) 173, (byte) 194, 32, 38 });
-            System.out.println("Sending Ping Request to " + inet);
-            System.out.println(inet.isReachable(5000) ? "Host is reachable" : "Host is NOT reachable");
-        } catch (Exception e){
-            e.printStackTrace();
+            Thread.sleep(500);
         }
     }
+
 }
