@@ -4,17 +4,19 @@ import java.io.IOException;
 
 public class Launcher {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         double ping = 0;
         Controler controleur = new Controler();
-        GUI fenetre = new GUI();
+        GUI fenetre = new GUI(controleur);
         while (controleur.en_route) {
-            System.out.println(controleur);
-            ping = controleur.getPing("104.160.141.3");
-            controleur.majStat(ping);
-            fenetre.updateGUI(controleur.min, controleur.moyenne, controleur.max, controleur.last_ping);
-
-            Thread.sleep(500);
+            fenetre.updateGUI(ping);
+            try {
+                Thread.sleep(500);
+                System.out.println(controleur);
+                ping = controleur.getPing();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
